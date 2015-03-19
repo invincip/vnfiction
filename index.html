@@ -21,19 +21,19 @@
             <!-- sidebar -->
             <div class="column col-sm-3" id="sidebar">
                 <a class="logo" href="#">V</a>
-                <ul class="nav state-group">
+                <ul class="nav state-group" ng-show="completionStates().length > 0">
                     <li class="text-center state-title"><a href="#">HOÀN THÀNH</a></li>
                     <li class="state-toggle" ng-class='{active: completionDisabledStates.indexOf(state) === -1}' ng-repeat="state in completionStates()" style="width: {{100 / completionStates().length}}%">
                       <a href="#" ng-click="toggleCompletionState(state)">{{state}}</a>
                     </li>
                 </ul>
-                <ul class="nav state-group">
+                <ul class="nav state-group" ng-show="ratingStates().length > 0">
                     <li class="text-center state-title"><a href="#">RATING</a></li>
                     <li class="state-toggle" ng-class='{active: ratingDisabledStates.indexOf(state) === -1}' ng-repeat="state in ratingStates()" style="width: {{100 / ratingStates().length}}%">
                       <a href="#" ng-click="toggleRatingState(state)">{{state}}</a>
                     </li>
                 </ul>
-                <ul class="nav state-group">
+                <ul class="nav state-group" ng-show="_catalog.length > 0">
                     <li class="text-center state-title"><a href="#">SẮP XẾP</a></li>
                     <li class="state-toggle" ng-class="{active: sortBy === 'name'}" style="width: 25%">
                       <a href="#" ng-click="(sortBy !== 'name') && sort('name')">NAME</a>
@@ -48,7 +48,7 @@
                       <a href="#" ng-click="(sortBy !== 'view') && sort('view')">VIEW</a>
                     </li>
                 </ul>
-                <ul class="nav state-group">
+                <ul class="nav state-group" ng-show="_catalog.length > 0">
                     <li class="text-center state-title"><a href="#">THỨ TỰ</a></li>
                     <li class="state-toggle" ng-class="{active: sortOrder === 'ascend'}" style="width: 50%">
                       <a href="#" ng-click="(sortOrder !== 'ascend') && order('ascend')">TĂNG DẦN</a>
