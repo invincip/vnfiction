@@ -125,6 +125,9 @@ angular.module('FictionApp', ['chieffancypants.loadingBar', 'ngAnimate', 'ui.boo
       $http.get('partials/' + story.sid + '.html').success(function(data) {
         $scope.panelItem.content = $sce.trustAsHtml(data);
       });
+      
+      // Analytics
+      ga('send', 'pageview', {page: '/story/' + story.sid, title: story.name});
     }
     $scope.closePanel = function() {
       $scope.panelShowed = false;
