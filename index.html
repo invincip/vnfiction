@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
+    <script src="js/ui-bootstrap.min.js"></script>
+    <script src="js/loading-bar.min.js"></script>
+    <script src="js/app.js"></script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/loading-bar.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+</head>
+<body ng-app="FictionApp" ng-controller="FictionCtrl" ng-class='{"disable-scroll": panelShowed}'>
+    <div class="wrapper">
+        <div class="box">
+            <!-- sidebar -->
+            <div class="column col-sm-3" id="sidebar">
+                <a class="logo" href="#">V</a>
+                <ul class="nav state-group">
+                    <li class="text-center state-title"><a href="#">HOÀN THÀNH</a></li>
+                    <li class="state-toggle" ng-class='{active: completionDisabledStates.indexOf(state) === -1}' ng-repeat="state in completionStates()" style="width: {{100 / completionStates().length}}%">
+                      <a href="#" ng-click="toggleCompletionState(state)">{{state}}</a>
+                    </li>
+                </ul>
+                <ul class="nav state-group">
+                    <li class="text-center state-title"><a href="#">RATING</a></li>
+                    <li class="state-toggle" ng-class='{active: ratingDisabledStates.indexOf(state) === -1}' ng-repeat="state in ratingStates()" style="width: {{100 / ratingStates().length}}%">
+                      <a href="#" ng-click="toggleRatingState(state)">{{state}}</a>
+                    </li>
+                </ul>
+                <ul class="nav state-group">
+                    <li class="text-center state-title"><a href="#">SẮP XẾP</a></li>
+                    <li class="state-toggle" ng-class="{active: sortBy === 'name'}" style="width: 25%">
+                      <a href="#" ng-click="(sortBy !== 'name') && sort('name')">NAME</a>
+                    </li>
+                    <li class="state-toggle" ng-class="{active: sortBy === 'length'}" style="width: 25%">
+                      <a href="#" ng-click="(sortBy !== 'length') && sort('length')">LENGTH</a>
+                    </li>
+                    <li class="state-toggle" ng-class="{active: sortBy === 'chapters'}" style="width: 25%">
+                      <a href="#" ng-click="(sortBy !== 'chapters') && sort('chapters')">CHAPTERS</a>
+                    </li>
+                    <li class="state-toggle" ng-class="{active: sortBy === 'view'}" style="width: 25%">
+                      <a href="#" ng-click="(sortBy !== 'view') && sort('view')">VIEW</a>
+                    </li>
+                </ul>
+                <ul class="nav state-group">
+                    <li class="text-center state-title"><a href="#">THỨ TỰ</a></li>
+                    <li class="state-toggle" ng-class="{active: sortOrder === 'ascend'}" style="width: 50%">
+                      <a href="#" ng-click="(sortOrder !== 'ascend') && order('ascend')">TĂNG DẦN</a>
+                    </li>
+                    <li class="state-toggle" ng-class="{active: sortOrder === 'descend'}" style="width: 50%">
+                      <a href="#" ng-click="(sortOrder !== 'descend') && order('descend')">GIẢM DẦN</a>
+                    </li>
+                </ul>
+                <ul class="nav hidden-xs" id="sidebar-footer">
+                    <li>
+                      <a href="#"><h3>TVTFiction</h3>Bản sao lưu của Writers' Sanctuary</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /sidebar -->
+            
+            <div class="column col-sm-9" id="main" scroll-to-top-when="page_changed">
+                <div class="padding">
+                    <div class="full col-sm-9" ng-repeat-start="story in currentItems">
+                        <!--/top story-->
+                        <div class="row">    
+                          <div class="col-sm-10">
+                            <h3 ng-click="view(story)" class="story-title">{{story.name}}</h3>
+                            <h4><span class="label label-default">{{story.author}}</span></h4>
+                            <small class="text-muted" ng-bind-html="story.abstract">
+                            </small>
+                            
+                            <br /><span class="label label-success" ng-show="story.stats.rating">Rating: {{story.stats.rating}}</span>
+                            <span class="label label-success" ng-show="story.stats.completed">Hoàn thành: {{story.stats.completed}}</span>
+                            <span class="label label-success" ng-show="story.stats.length">Độ dài: {{story.stats.length}}</span>
+                            <span class="label label-success" ng-show="story.stats.chapters">Phân đoạn: {{story.stats.chapters}}</span>
+                            <span class="label label-success" ng-show="story.stats.read">Lượt xem: {{story.stats.read}}</span>
+                          </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row divider" ng-repeat-end>    
+                        <div class="col-sm-12"><hr></div>
+                    </div>
+                    
+                    <div class="text-center" ng-show="totalItems > 0">
+                        <pagination total-items="totalItems" ng-model="currentPage" max-size="5"  boundary-links="true" items-per-page="pageLimit" ng-change="pageChanged()"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cd-panel from-right" ng-class='{"is-visible": panelShowed}' ng-click="closePanel()">
+        <header class="cd-panel-header" ng-click="$event.stopPropagation()">
+        <h1>{{panelItem.title}}</h1>
+        <a href="#" class="cd-panel-close" ng-click="closePanel()">Close</a>
+        </header>
+
+        <div class="cd-panel-container" ng-click="$event.stopPropagation()">
+        <div class="cd-panel-content" ng-bind-html="panelItem.content">
+        </div> <!-- cd-panel-content -->
+        </div> <!-- cd-panel-container -->
+    </div> <!-- cd-panel -->
+</body>
+</html>
