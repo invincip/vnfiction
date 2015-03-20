@@ -86,7 +86,7 @@ Parallel.each(catalog, progress: "Downloading stories...", in_threads: 8) do |st
   container_selector = "table.listbox:nth-child(3) .contlist span"
 
   # Ignore downloaded stories
-#   next if File.exists?("partials/#{sid}.html")
+  next if File.exists?("partials/#{sid}.html")
   
   # Get first chapter
   page = agent.get "http://vnfiction.com/viewstory.php?sid=#{sid}"
